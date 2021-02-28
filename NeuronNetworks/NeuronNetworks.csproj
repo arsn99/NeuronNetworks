@@ -63,10 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image1.bmp" />
-    <None Include="Resources\Image4.bmp" />
-    <None Include="Resources\Image3.bmp" />
-    <None Include="Resources\Image2.bmp" />
-    <None Include="Resources\Image1.bmp" />
+    <None Include="Images\img_22353.bmp" />
+    <None Include="Images\39458.bmp" />
+    <None Include="Images\38394.bmp" />
+    <None Include="Images\20940.bmp" />
+    <None Include="Images\11723-200.bmp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -75,7 +76,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="MLApp">

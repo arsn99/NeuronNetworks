@@ -8,12 +8,14 @@ namespace NeuronNetworks
 {
     public class Neuron
     {
-        static int sec = DateTime.UtcNow.Millisecond;// 993
+        static public int sec = DateTime.UtcNow.Millisecond;// 993
         public List<double> Weights { get; }
         public List<double> Inputs { get; }
         public NeuronType neuronType { get; }
         public double Output { get; private set; }
         public double Delta { get; private set; }
+        const double angle1 = 2.0;
+        const double angle2 = 1.0;
         public Neuron(int inputCount,NeuronType type = NeuronType.Normal)
         {
             neuronType = type;
@@ -99,10 +101,10 @@ namespace NeuronNetworks
             //Console.WriteLine($"{Sigmoid(x) * (1 - Sigmoid(x))} {Math.Exp(-x) / Math.Pow(1 + Math.Exp(-x), 2)}");
             if (neuronType == NeuronType.Output)
             {
-                return 1.0 * Sigmoid(x) * (1.0 - Sigmoid(x));
+                return 1.0 * x * (1.0 - x);
             }
             else
-                return  Sigmoid(x) * (1.0 - Sigmoid(x));
+                return  x * (1.0 - x);
 
         }
     }

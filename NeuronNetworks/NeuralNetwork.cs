@@ -23,6 +23,7 @@ namespace NeuronNetworks
         {
             SendSignalsToInputNeurons(inputSignal);
             FeedForwardAllLayersAfterInput();
+
             if (Topology.OutputCount==1)
             {
                 return new List<Neuron> { Layers.Last().Neurons[0] };
@@ -31,6 +32,21 @@ namespace NeuronNetworks
             {
                 return Layers.Last().Neurons;
             }
+        }
+        double GetError(List<Tuple<double[], double[]>> dataset)
+        {
+            double error = 0.0;
+            for (int j = 0; j < dataset.Count; j++)
+            {
+                var actual = FeedForward(dataset[j].Item2);
+                var diff = new double[actual.Count];
+                for (int i = 0; i < diff.Length; i++)
+                {
+                    diff[i] = actual[i].Output - dataset[j].Item1[i];
+                }
+                error += diff.Sum(x => x * x) / Layers.Last().NeuronCount;
+            }
+            return error;
         }
         private double BackPropagation(double[] expected, double[] input)
         {
@@ -64,21 +80,36 @@ namespace NeuronNetworks
                 }
             }
 
-            return diff.Sum(x => x * x/4.0);
+            return diff.Sum(x => x * x) / Layers.Last().NeuronCount;
         }
-        public double[] Learn(List<Tuple<double[],double[]>> dataset, int epoch)
+        public double[][] Learn(List<Tuple<double[],double[]>> dataset, List<Tuple<double[], double[]>> dataset2, int epoch)
         {
-            var error = new double[epoch];
+            var error = new double[2][];
+
+            error[0] = new double[epoch];
+            error[1] = new double[epoch];
+
+            var left = new List<int>();
+            Random rand = new Random(Neuron.sec);
             for (int i = 0; i < epoch; i++)
             {
-                
-                foreach (var date in dataset)
+                for (int j = 0; j < dataset.Count; j++)
                 {
-                    error[i]+= BackPropagation(date.Item1, date.Item2);
-                    
-                    Console.WriteLine(error);
+                    left.Add(j);
                 }
-                error[i] /= 4.0;
+                for (int k = 0; k < dataset.Count; k++)
+                {
+                    int counter = rand.Next(0, left.Count);             
+                    error[0][i] += BackPropagation(dataset[left[counter]].Item1, dataset[left[counter]].Item2);
+                    left.RemoveAt(counter);
+                }
+                /*foreach (var date in dataset)
+                {
+                    error[i]+= BackPropagation(date.Item1, date.Item2); 
+                    Console.WriteLine(error);
+                }*/
+                error[0][i] /= dataset.Count;
+                error[1][i] = GetError(dataset2)/dataset2.Count;
             }
             return error;
         }
