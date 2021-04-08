@@ -14,8 +14,8 @@ namespace NeuronNetworks
         public NeuronType neuronType { get; }
         public double Output { get; private set; }
         public double Delta { get; private set; }
-        const double angle1 = 2.0;
-        const double angle2 = 1.0;
+        const double angle1 = -1.0;
+        const double angle2 = 1.2;
         public Neuron(int inputCount,NeuronType type = NeuronType.Normal)
         {
             neuronType = type;
@@ -88,10 +88,10 @@ namespace NeuronNetworks
         {
             if (neuronType==NeuronType.Output)
             {
-                return 1.0 / (1.0 + Math.Exp(-1.0*x));
+                return 1.0 / (1.0 + Math.Exp(-angle2*x));
             }
             else
-                return 1.0 / (1.0 + Math.Exp(-x));
+                return 1.0 / (1.0 + Math.Exp(-x*angle1));
 
         }
         private double SigmoidDx(double x)
@@ -101,10 +101,10 @@ namespace NeuronNetworks
             //Console.WriteLine($"{Sigmoid(x) * (1 - Sigmoid(x))} {Math.Exp(-x) / Math.Pow(1 + Math.Exp(-x), 2)}");
             if (neuronType == NeuronType.Output)
             {
-                return 1.0 * x * (1.0 - x);
+                return angle2 * x * (1.0 - x);
             }
             else
-                return  x * (1.0 - x);
+                return  angle1*x * (1.0 - x);
 
         }
     }

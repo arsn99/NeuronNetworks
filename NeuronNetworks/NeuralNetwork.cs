@@ -44,7 +44,7 @@ namespace NeuronNetworks
                 {
                     diff[i] = actual[i].Output - dataset[j].Item1[i];
                 }
-                error += diff.Sum(x => x * x) / Layers.Last().NeuronCount;
+                error += diff.Sum(x => x * x) / diff.Length;
             }
             return error;
         }
@@ -102,6 +102,10 @@ namespace NeuronNetworks
                     int counter = rand.Next(0, left.Count);             
                     error[0][i] += BackPropagation(dataset[left[counter]].Item1, dataset[left[counter]].Item2);
                     left.RemoveAt(counter);
+                }
+                if (i%100==0 && i>0)
+                {
+                    Topology.LearningSpeed *= 0.5;
                 }
                 /*foreach (var date in dataset)
                 {

@@ -10,7 +10,7 @@ namespace NeuronNetworks
     {
         public int InputCount { get; }
         public int OutputCount { get; }
-        public double LearningSpeed { get; }
+        public double LearningSpeed { get; set; }
 
         public List<int> HiddenLayer;
         public Topology(int inputCount, int outputCount, double learningSpeed, params int[] laysers)

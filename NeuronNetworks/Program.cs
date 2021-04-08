@@ -42,7 +42,7 @@ namespace NeuronNetworks
         public static double minDif = double.MaxValue;
         public static double step = 0.1;
         public static int count = 4;
-        public static int size = 10000;
+        public static int size = 500;
         public class Exempl
         {
             public double start, end;
@@ -59,20 +59,20 @@ namespace NeuronNetworks
         public static void Go(object exempl1)
         {
             Exempl exempl = (Exempl)exempl1;
-            for (double i = exempl.start; i < exempl.end; i += 0.01)
+            for (double i = exempl.start; i < exempl.end; i += 0.1)
             {
-                    for (int j = 1; j < 7; j++)
+                    for (int j = 2; j < 7; j++)
                     {
                     Topology topology = new Topology(6, 4, i, j);
                     NeuralNetwork neuralNetwork = new NeuralNetwork(topology);
 
                     var diff1 = neuralNetwork.Learn(exempl.dataset,exempl.dataset2, size);
                     mutex.WaitOne();
-                    if (diff1[0].Last() * diff1[0].Last() + (diff1[1].Last() - diff1[0].Last()) * (diff1[1].Last() - diff1[0].Last()) < minDif)
+                    if (diff1[0].Last()/* * diff1[0].Last() + (diff1[1].Last() - diff1[0].Last()) * (diff1[1].Last() - diff1[0].Last()) */< minDif)
                     {
                         step = i;
                         count = j;
-                        minDif = diff1[0].Last() * diff1[0].Last() +( diff1[1].Last() - diff1[0].Last())* (diff1[1].Last() - diff1[0].Last());
+                        minDif = diff1[0].Last() /** diff1[0].Last() +( diff1[1].Last() - diff1[0].Last())* (diff1[1].Last() - diff1[0].Last())*/;
                     }
                     mutex.ReleaseMutex();
                 }
@@ -109,8 +109,8 @@ namespace NeuronNetworks
                */
             };
             var ex = new Exempl[4];
-            double start = 0.0;
-            double end = 1.0;
+            double start = 2.0;
+            double end = 5.0;
             double st = (end - start) / ex.Length;
             for (int i = 0; i < ex.Length; i++)
             {
